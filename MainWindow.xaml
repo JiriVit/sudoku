@@ -5,8 +5,43 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Sudoku"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="Sudoku" Height="500" Width="800" WindowStartupLocation="CenterScreen">
     <Grid>
+        
+        <!-- Sudoku Grid -->
+        <Border BorderBrush="Black" BorderThickness="2" Width="400" Height="400" SnapsToDevicePixels="True">
+            <Grid x:Name="gridMain">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
 
+                <Border BorderBrush="Black" BorderThickness="0 0 1 1">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+
+                        <Border BorderBrush="Black" BorderThickness="0 0 1 1">
+                            <TextBlock Text="1" FontSize="30" FontFamily="Arial" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        </Border>
+                        
+                    </Grid>
+                </Border>
+            </Grid>
+        </Border>
     </Grid>
 </Window>
