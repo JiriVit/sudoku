@@ -16,11 +16,19 @@ namespace Sudoku
     /// </summary>
     public partial class MainWindow : Window
     {
+        #region .: Private Variables :.
+
+        private readonly ViewModel viewModel = new();
+
+        #endregion
+
         #region .: Constructor :.
 
         public MainWindow()
         {
             InitializeComponent();
+            DataContext = viewModel;
+
             CreateSudokuElements();
         }
 
@@ -36,14 +44,15 @@ namespace Sudoku
             // clear all children created by the designer
             gridMain.Children.Clear();
 
-            for (int row = 0; row < 3; row++)
+            // iterate through 3x3 subgrids
+            for (int subgridRow = 0; subgridRow < 3; subgridRow++)
             {
-                for (int col = 0; col < 3; col++)
+                for (int subgridCol = 0; subgridCol < 3; subgridCol++)
                 {
-                    double thicknessLeft = (col > 0) ? 1 : 0;
-                    double thicknessTop = (row > 0) ? 1 : 0;
-                    double thicknessRight = (col < 2) ? 1 : 0;
-                    double thicknessBottom = (row < 2) ? 1 : 0;
+                    double thicknessLeft = (subgridCol > 0) ? 1 : 0;
+                    double thicknessTop = (subgridRow > 0) ? 1 : 0;
+                    double thicknessRight = (subgridCol < 2) ? 1 : 0;
+                    double thicknessBottom = (subgridRow < 2) ? 1 : 0;
 
                     Border subgridBorder = new()
                     {
@@ -52,10 +61,10 @@ namespace Sudoku
                         SnapsToDevicePixels = true,
                     };
 
-                    Grid.SetColumn(subgridBorder, col);
-                    Grid.SetRow(subgridBorder, row);
+                    Grid.SetColumn(subgridBorder, subgridCol);
+                    Grid.SetRow(subgridBorder, subgridRow);
 
-                    InsertSubgrid(subgridBorder);
+                    InsertSubgrid(subgridBorder, subgridRow, subgridCol);
 
                     gridMain.Children.Add(subgridBorder);
                 }
@@ -63,18 +72,17 @@ namespace Sudoku
 
         }
 
-        private static void InsertSubgrid(Border subgridBorder)
+        private static void InsertSubgrid(Border subgridBorder, int subgridRow, int subgridCol)
         {
             Grid subgrid = new();
 
-            subgrid.RowDefinitions.Add(new RowDefinition());
-            subgrid.RowDefinitions.Add(new RowDefinition());
-            subgrid.RowDefinitions.Add(new RowDefinition());
-            subgrid.ColumnDefinitions.Add(new ColumnDefinition());
-            subgrid.ColumnDefinitions.Add(new ColumnDefinition());
-            subgrid.ColumnDefinitions.Add(new ColumnDefinition());
+            for (int i = 0; i < 3; i++)
+            {
+                subgrid.RowDefinitions.Add(new RowDefinition());
+                subgrid.ColumnDefinitions.Add(new ColumnDefinition());
+            }
 
-            int cellNumber = 1;
+            // iterate through subgrid cells
             for (int row = 0; row < 3; row++)
             {
                 for (int col = 0; col < 3; col++)
@@ -102,11 +110,15 @@ namespace Sudoku
                         FontFamily = new FontFamily("Arial"),
                         VerticalAlignment = VerticalAlignment.Center,
                         HorizontalAlignment = HorizontalAlignment.Center,
-                        Text = cellNumber.ToString(),
                     };
 
+                    int totalCol = subgridCol * 3 + col;
+                    int totalRow = subgridRow * 3 + row;
+                    int cellIndex = totalRow * 9 + totalCol;
+
+                    textBlock.SetBinding(TextBlock.TextProperty, $"Numbers[{cellIndex}]");
+
                     cellBorder.Child = textBlock;
-                    cellNumber++;
                 }
             }
 

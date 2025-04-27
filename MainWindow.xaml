@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Sudoku"
         mc:Ignorable="d"
-        Title="Sudoku" Height="500" Width="800" WindowStartupLocation="CenterScreen">
+        Title="Sudoku" Height="500" Width="800" WindowStartupLocation="CenterScreen"
+        d:DataContext="{d:DesignInstance Type=local:ViewModel}">
     <Grid>
         
         <!-- Sudoku Grid -->
@@ -36,7 +37,7 @@
                         </Grid.ColumnDefinitions>
 
                         <Border BorderBrush="Black" BorderThickness="0 0 1 1">
-                            <TextBlock Text="1" FontSize="30" FontFamily="Arial" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                            <TextBlock Text="{Binding Numbers[0]}" FontSize="30" FontFamily="Arial" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                         </Border>
                         
                     </Grid>
