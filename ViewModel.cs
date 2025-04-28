@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Sudoku
 {
+    /// <summary>
+    /// Provides a ViewModel for the application.
+    /// </summary>
     internal class ViewModel
     {
         #region .: Properties :.
