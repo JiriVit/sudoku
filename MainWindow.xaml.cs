@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Diagnostics;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -72,7 +73,7 @@ namespace Sudoku
 
         }
 
-        private static void InsertSubgrid(Border subgridBorder, int subgridRow, int subgridCol)
+        private void InsertSubgrid(Border subgridBorder, int subgridRow, int subgridCol)
         {
             Grid subgrid = new();
 
@@ -112,18 +113,46 @@ namespace Sudoku
                         HorizontalAlignment = HorizontalAlignment.Center,
                     };
 
+                    // calculate cell index within a 1D array
                     int totalCol = subgridCol * 3 + col;
                     int totalRow = subgridRow * 3 + row;
                     int cellIndex = totalRow * 9 + totalCol;
 
-                    textBlock.SetBinding(TextBlock.TextProperty, $"Cells[{cellIndex}].Number");
+                    // configure bindings
+                    textBlock.DataContext = viewModel.Cells[cellIndex];
+                    textBlock.SetBinding(TextBlock.TextProperty, "Number");
+                    cellBorder.DataContext = viewModel.Cells[cellIndex];
+                    cellBorder.SetBinding(Border.BackgroundProperty, "Background");
 
+                    // configure event handlers
+                    cellBorder.MouseEnter += CellBorder_MouseEnter;
+                    cellBorder.MouseLeave += CellBorder_MouseLeave;
+
+                    // place the TextBlock to the Border
                     cellBorder.Child = textBlock;
                 }
             }
 
             subgridBorder.Child = subgrid;
         }
+
+        #region .: Event Handlers :.
+
+        private static void CellBorder_MouseEnter(object sender, MouseEventArgs e)
+        {
+            CellModel cellModel = (CellModel)((Border)sender).DataContext;
+
+            cellModel.Highlighted = true;
+        }
+
+        private static void CellBorder_MouseLeave(object sender, MouseEventArgs e)
+        {
+            CellModel cellModel = (CellModel)((Border)sender).DataContext;
+
+            cellModel.Highlighted = false;
+        }
+
+        #endregion
 
         #endregion
     }

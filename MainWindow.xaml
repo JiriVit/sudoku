@@ -36,8 +36,10 @@
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
 
-                        <Border BorderBrush="Black" BorderThickness="0 0 1 1">
-                            <TextBlock Text="{Binding Cells[0].Number}" FontSize="30" FontFamily="Arial" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        <Border Background="LightGray" BorderBrush="Black" BorderThickness="0 0 1 1">
+                            <TextBlock Text="1" 
+                                       FontSize="30" FontFamily="Arial" 
+                                       VerticalAlignment="Center" HorizontalAlignment="Center"/>
                         </Border>
                         
                     </Grid>
