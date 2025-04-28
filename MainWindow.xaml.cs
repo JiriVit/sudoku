@@ -136,23 +136,23 @@ namespace Sudoku
             subgridBorder.Child = subgrid;
         }
 
+        #endregion
+
         #region .: Event Handlers :.
 
         private static void CellBorder_MouseEnter(object sender, MouseEventArgs e)
         {
             CellModel cellModel = (CellModel)((Border)sender).DataContext;
 
-            cellModel.Highlighted = true;
+            cellModel.MouseOver = true;
         }
 
         private static void CellBorder_MouseLeave(object sender, MouseEventArgs e)
         {
             CellModel cellModel = (CellModel)((Border)sender).DataContext;
 
-            cellModel.Highlighted = false;
+            cellModel.MouseOver = false;
         }
-
-        #endregion
 
         #endregion
     }

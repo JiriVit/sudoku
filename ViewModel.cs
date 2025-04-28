@@ -31,12 +31,30 @@ namespace Sudoku
             { 
                 for (int col = 0;  col < 9; col++)
                 {
-                    Cells[row * 9 + col] = new()
+                    CellModel cellModel = new(row, col)
                     {
                         Number = 1 + (row % 3) * 3 + col % 3,
                     };
+                    cellModel.MouseOverChanged += CellModel_MouseOverChanged;
+                    
+                    Cells[row * 9 + col] = cellModel;
                 }
             }
+        }
+
+        #endregion
+
+        #region .: Event Handlers :.
+
+        private void CellModel_MouseOverChanged(object? sender, EventArgs e)
+        {
+            CellModel cellM = (CellModel)sender!;
+
+            foreach (var c in Cells.Where(c => c.IsSameRegion(cellM)))
+            {
+                c.Highlighted = cellM.MouseOver;
+            }
+
         }
 
         #endregion
