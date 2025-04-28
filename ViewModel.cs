@@ -39,7 +39,7 @@ namespace Sudoku
                 {
                     CellModel cellModel = new(row, col)
                     {
-                        Number = 1 + (row % 3) * 3 + col % 3,
+                        //Number = 1 + (row % 3) * 3 + col % 3,
                     };
                     
                     Cells[row * 9 + col] = cellModel;

@@ -17,7 +17,7 @@ namespace Sudoku
         /// <summary>
         /// Gets or sets the number written in the cell.
         /// </summary>
-        public int Number { get; set; }
+        public int? Number { get; set; }
 
         /// <summary>
         /// Gets row number of the cell.
