@@ -17,6 +17,12 @@ namespace Sudoku
 
         #endregion
 
+        #region .: Private Variables :.
+
+        private CellModel? selectedCell;
+
+        #endregion
+
         #region .: Constructor :.
 
         /// <summary>
@@ -35,7 +41,6 @@ namespace Sudoku
                     {
                         Number = 1 + (row % 3) * 3 + col % 3,
                     };
-                    cellModel.MouseOverChanged += CellModel_MouseOverChanged;
                     
                     Cells[row * 9 + col] = cellModel;
                 }
@@ -44,17 +49,33 @@ namespace Sudoku
 
         #endregion
 
-        #region .: Event Handlers :.
+        #region .: Public Methods :.
 
-        private void CellModel_MouseOverChanged(object? sender, EventArgs e)
+        /// <summary>
+        /// Selects defined cell so it can be edited.
+        /// </summary>
+        /// <param name="cell">The cell to be selected.</param>
+        public void SelectCell(CellModel cell)
         {
-            CellModel cellM = (CellModel)sender!;
-
-            foreach (var c in Cells.Where(c => c.IsSameRegion(cellM)))
+            if (selectedCell != null)
             {
-                c.Highlighted = cellM.MouseOver;
+                selectedCell.Selected = false;
+                foreach (var c in Cells.Where(c => c.IsSameRegion(selectedCell)))
+                {
+                    c.Highlighted = false;
+                }
             }
 
+            selectedCell = cell;
+
+            if (selectedCell != null)
+            {
+                selectedCell.Selected = true;
+                foreach (var c in Cells.Where(c => c.IsSameRegion(selectedCell)))
+                {
+                    c.Highlighted = true;
+                }
+            }
         }
 
         #endregion

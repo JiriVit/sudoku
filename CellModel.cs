@@ -37,10 +37,10 @@ namespace Sudoku
         /// <summary>
         /// Gets cell border background.
         /// </summary>
-        public Brush Background { get => highlighted ? Brushes.LightGray : Brushes.White; }
+        public Brush Background { get => selected ? Brushes.LightBlue : (highlighted ? Brushes.Gainsboro : Brushes.White); }
 
         /// <summary>
-        /// Gets or sets indication that the cell is highlighted (because of mouse hovering).
+        /// Gets or sets indication that the cell is highlighted.
         /// </summary>
         public bool Highlighted
         {
@@ -71,12 +71,28 @@ namespace Sudoku
             }
         }
 
+        /// <summary>
+        /// Sets indication that the cell is selected.
+        /// </summary>
+        public bool Selected
+        {
+            set
+            {
+                if (selected != value)
+                {
+                    selected = value;
+                    NotifyPropertyChanged(nameof(Background));
+                }
+            }
+        }
+
         #endregion
 
         #region .: Private Variables :.
 
         private bool highlighted = false;
         private bool mouseOver = false;
+        private bool selected = false;
 
         #endregion
 

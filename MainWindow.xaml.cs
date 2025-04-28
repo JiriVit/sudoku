@@ -127,6 +127,7 @@ namespace Sudoku
                     // configure event handlers
                     cellBorder.MouseEnter += CellBorder_MouseEnter;
                     cellBorder.MouseLeave += CellBorder_MouseLeave;
+                    cellBorder.MouseDown += CellBorder_MouseDown;
 
                     // place the TextBlock to the Border
                     cellBorder.Child = textBlock;
@@ -135,6 +136,7 @@ namespace Sudoku
 
             subgridBorder.Child = subgrid;
         }
+
 
         #endregion
 
@@ -152,6 +154,12 @@ namespace Sudoku
             CellModel cellModel = (CellModel)((Border)sender).DataContext;
 
             cellModel.MouseOver = false;
+        }
+
+        private void CellBorder_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            CellModel cell = (CellModel)((Border)sender).DataContext;
+            viewModel.SelectCell(cell);
         }
 
         #endregion
