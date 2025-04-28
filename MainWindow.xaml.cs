@@ -116,7 +116,7 @@ namespace Sudoku
                     int totalRow = subgridRow * 3 + row;
                     int cellIndex = totalRow * 9 + totalCol;
 
-                    textBlock.SetBinding(TextBlock.TextProperty, $"Numbers[{cellIndex}]");
+                    textBlock.SetBinding(TextBlock.TextProperty, $"Cells[{cellIndex}].Number");
 
                     cellBorder.Child = textBlock;
                 }
