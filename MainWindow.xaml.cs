@@ -162,6 +162,22 @@ namespace Sudoku
             viewModel.SelectCell(cell);
         }
 
+        private void Window_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key >= Key.D1 && e.Key <= Key.D9)
+            {
+                viewModel.SetNumberInSelectedCell(e.Key - Key.D0);
+            }
+            else if (e.Key >= Key.NumPad1 && e.Key <= Key.NumPad9)
+            {
+                viewModel.SetNumberInSelectedCell(e.Key - Key.NumPad0);
+            }
+            else if (e.Key == Key.Delete)
+            {
+                viewModel.ClearNumberInSelectedCell();
+            }
+        }
+
         #endregion
     }
 }

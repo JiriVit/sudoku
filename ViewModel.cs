@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace Sudoku
 {
     /// <summary>
@@ -75,6 +76,37 @@ namespace Sudoku
                 {
                     c.Highlighted = true;
                 }
+            }
+        }
+
+        /// <summary>
+        /// Sets the number in the selected cell.
+        /// If no cell is selected, no action is taken.
+        /// </summary>
+        /// <param name="number">Number to be set.</param>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown if the number is out of range 1-9.</exception>
+        public void SetNumberInSelectedCell(int number)
+        {
+            if ((number < 1) || (number > 9))
+            {
+                throw new ArgumentOutOfRangeException(nameof(number), "Must be in range 1-9.");
+            }
+
+            if (selectedCell != null)
+            {
+                selectedCell.Number = number;
+            }
+        }
+
+        /// <summary>
+        /// Clears number in the selected cell.
+        /// If no cell is selected, no action is taken.
+        /// </summary>
+        public void ClearNumberInSelectedCell()
+        {
+            if (selectedCell != null)
+            {
+                selectedCell.Number = null;
             }
         }
 

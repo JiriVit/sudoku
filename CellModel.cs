@@ -17,7 +17,15 @@ namespace Sudoku
         /// <summary>
         /// Gets or sets the number written in the cell.
         /// </summary>
-        public int? Number { get; set; }
+        public int? Number 
+        { 
+            get => number; 
+            set
+            {
+                number = value;
+                NotifyPropertyChanged(nameof(Number));
+            }
+        }
 
         /// <summary>
         /// Gets row number of the cell.
@@ -90,6 +98,7 @@ namespace Sudoku
 
         #region .: Private Variables :.
 
+        private int? number = null;
         private bool highlighted = false;
         private bool mouseOver = false;
         private bool selected = false;

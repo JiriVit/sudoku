@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:Sudoku"
         mc:Ignorable="d"
         Title="Sudoku" Height="500" Width="800" WindowStartupLocation="CenterScreen"
-        d:DataContext="{d:DesignInstance Type=local:ViewModel}">
+        d:DataContext="{d:DesignInstance Type=local:ViewModel}"
+        KeyDown="Window_KeyDown">
     <Grid>
         
         <!-- Sudoku Grid -->
