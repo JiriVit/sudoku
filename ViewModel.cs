@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -33,17 +34,11 @@ namespace Sudoku
         {
             Cells = new CellModel[81];
 
-            // fill the cells with sample number to verify binding
             for (int row = 0; row < 9; row++) 
             { 
                 for (int col = 0;  col < 9; col++)
                 {
-                    CellModel cellModel = new(row, col)
-                    {
-                        //Number = 1 + (row % 3) * 3 + col % 3,
-                    };
-                    
-                    Cells[row * 9 + col] = cellModel;
+                    Cells[row * 9 + col] = new(row, col);
                 }
             }
         }
@@ -108,6 +103,20 @@ namespace Sudoku
             {
                 selectedCell.Number = null;
             }
+        }
+
+        public void Generate()
+        {
+            SudokuGenerator.Generate();
+
+            for (int row = 0; row < 9; row++)
+            {
+                for (int col = 0; col < 9; col++)
+                {
+                    Cells[row * 9 + col].Number = SudokuGenerator.Sudoku[row, col];
+                }
+            }
+
         }
 
         #endregion

@@ -8,7 +8,11 @@
         Title="Sudoku" Height="500" Width="800" WindowStartupLocation="CenterScreen"
         d:DataContext="{d:DesignInstance Type=local:ViewModel}"
         KeyDown="Window_KeyDown">
-    <Grid>
+    <DockPanel>
+
+        <ToolBar DockPanel.Dock="Top">
+            <Button Content="Generate" Click="Button_Click"/>
+        </ToolBar>
         
         <!-- Sudoku Grid -->
         <Border BorderBrush="Black" BorderThickness="2" Width="400" Height="400" SnapsToDevicePixels="True">
@@ -47,5 +51,5 @@
                 </Border>
             </Grid>
         </Border>
-    </Grid>
+    </DockPanel>
 </Window>

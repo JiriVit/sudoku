@@ -142,6 +142,8 @@ namespace Sudoku
 
         #region .: Event Handlers :.
 
+        #region .: CellBorder :.
+
         private static void CellBorder_MouseEnter(object sender, MouseEventArgs e)
         {
             CellModel cellModel = (CellModel)((Border)sender).DataContext;
@@ -162,6 +164,10 @@ namespace Sudoku
             viewModel.SelectCell(cell);
         }
 
+        #endregion
+
+        #region .: Window :.
+
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key >= Key.D1 && e.Key <= Key.D9)
@@ -177,6 +183,17 @@ namespace Sudoku
                 viewModel.ClearNumberInSelectedCell();
             }
         }
+
+        #endregion
+
+        #region .: Button :.
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            viewModel.Generate();
+        }
+
+        #endregion
 
         #endregion
     }
