@@ -121,6 +121,7 @@ namespace Sudoku
                     // configure bindings
                     textBlock.DataContext = viewModel.Cells[cellIndex];
                     textBlock.SetBinding(TextBlock.TextProperty, "Number");
+                    textBlock.SetBinding(TextBlock.ForegroundProperty, "Foreground");
                     cellBorder.DataContext = viewModel.Cells[cellIndex];
                     cellBorder.SetBinding(Border.BackgroundProperty, "Background");
 
@@ -136,7 +137,6 @@ namespace Sudoku
 
             subgridBorder.Child = subgrid;
         }
-
 
         #endregion
 
@@ -196,6 +196,9 @@ namespace Sudoku
                 {
                     switch(s)
                     {
+                        case "Sample":
+                            viewModel.LoadSample();
+                            break;
                         case "Generate":
                             viewModel.Generate();
                             break;

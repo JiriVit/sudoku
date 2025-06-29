@@ -14,12 +14,14 @@ namespace Sudoku
     {
         #region .: Properties :.
 
+        #region .: Contents :.
+
         /// <summary>
         /// Gets or sets the number written in the cell.
         /// </summary>
-        public int? Number 
-        { 
-            get => number; 
+        public int? Number
+        {
+            get => number;
             set
             {
                 number = value;
@@ -27,11 +29,15 @@ namespace Sudoku
             }
         }
 
+        #endregion
+
+        #region .: Position :.
+
         /// <summary>
         /// Gets row number of the cell.
         /// </summary>
         public int Row { get; private set; } = row;
-        
+
         /// <summary>
         /// Gets column number of the cell.
         /// </summary>
@@ -42,10 +48,23 @@ namespace Sudoku
         /// </summary>
         public int Subgrid { get; private set; } = (row / 3) * 3 + (col / 3);
 
+        #endregion
+
+        #region .: Appearance :.
+
         /// <summary>
         /// Gets cell border background.
         /// </summary>
-        public Brush Background { get => selected ? Brushes.LightBlue : (highlighted ? Brushes.Gainsboro : Brushes.White); }
+        public Brush Background => selected ? Brushes.LightBlue : (highlighted ? Brushes.Gainsboro : Brushes.White);
+
+        /// <summary>
+        /// Gets cell text foreground.
+        /// </summary>
+        public Brush Foreground => editable ? (incorrect ? Brushes.Red : Brushes.Blue) : Brushes.Black;
+
+        #endregion
+
+        #region .: Status :.
 
         /// <summary>
         /// Gets or sets indication that the cell is highlighted.
@@ -69,7 +88,7 @@ namespace Sudoku
         public bool MouseOver
         {
             get => mouseOver;
-            set 
+            set
             {
                 if (mouseOver != value)
                 {
@@ -94,6 +113,39 @@ namespace Sudoku
             }
         }
 
+        /// <summary>
+        /// Get or sets indication that the cell is editable.
+        /// </summary>
+        public bool Editable
+        {
+            get => editable;
+            set
+            {
+                if (editable != value)
+                {
+                    editable = value;
+                    NotifyPropertyChanged(nameof(Foreground));
+                }
+            }
+        }
+
+        /// <summary>
+        /// Sets indication that the number in the cell is incorrect.
+        /// </summary>
+        public bool Incorrect
+        {
+            set
+            {
+                if (incorrect != value)
+                {
+                    incorrect = value;
+                    NotifyPropertyChanged(nameof(Foreground));
+                }
+            }
+        }
+
+        #endregion
+
         #endregion
 
         #region .: Private Variables :.
@@ -102,6 +154,8 @@ namespace Sudoku
         private bool highlighted = false;
         private bool mouseOver = false;
         private bool selected = false;
+        private bool editable = false;
+        private bool incorrect = false;
 
         #endregion
 
@@ -113,9 +167,22 @@ namespace Sudoku
         /// <param name="cell">The second cell to be checked for the same region.</param>
         /// <returns>Boolean value indicating the result.</returns>
         public bool IsSameRegion(CellModel cell) => 
-            (cell.Row == Row) || 
-            (cell.Column == Column) ||
-            (cell.Subgrid == Subgrid);
+            (cell != this) &&
+            ( (cell.Row == Row) || 
+              (cell.Column == Column) ||
+              (cell.Subgrid == Subgrid)
+            );
+
+        /// <summary>
+        /// Checks if this cell has the same number as another cell, provided none of them
+        /// is empty.
+        /// </summary>
+        /// <param name="cell">The second cell to be checked for the same number.</param>
+        /// <returns>Boolean value indicating the result.</returns>
+        public bool HasSameNumber(CellModel cell) =>
+            (this != cell) &&
+            (Number != null) &&
+            (Number == cell.Number);
 
         #endregion
 
