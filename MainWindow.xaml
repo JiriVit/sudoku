@@ -11,7 +11,8 @@
     <DockPanel>
 
         <ToolBar DockPanel.Dock="Top">
-            <Button Content="Generate" Click="Button_Click"/>
+            <Button Content="Generate" Tag="Generate"  Click="Button_Click"/>
+            <Button Content="Solve" Tag="Solve" Click="Button_Click"/>
         </ToolBar>
         
         <!-- Sudoku Grid -->

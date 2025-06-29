@@ -14,7 +14,7 @@ namespace Sudoku
     {
         #region .: Private Fields :.
 
-        private readonly int[] numbers = new int[81];
+        private int[] numbers = new int[81];
         private readonly List<int> numbersInRegion = [];
 
         #endregion
@@ -82,6 +82,12 @@ namespace Sudoku
         }
 
         /// <summary>
+        /// Checks if the sudoku is solved, ie. has no empty cells.
+        /// </summary>
+        /// <returns>Boolean value indicating if the sudoku is solved.</returns>
+        public bool IsSolved() => numbers.All(n => n != 0);
+
+        /// <summary>
         /// Copies the numbers to given array of instances of <see cref="CellModel"/>.
         /// </summary>
         /// <param name="cellArray">Array to copy the numbers to.</param>
@@ -89,7 +95,7 @@ namespace Sudoku
         {
             for (int i = 0; i < 81; i++)
             {
-                cellArray[i].Number = numbers[i];
+                cellArray[i].Number = (numbers[i] > 0) ? numbers[i] : null;
             }
         }
 
@@ -102,6 +108,36 @@ namespace Sudoku
             SudokuGrid clone = new();
             Array.Copy(numbers, clone.numbers, numbers.Length);
             return clone;
+        }
+
+        public static SudokuGrid FromCellArray(CellModel[] cellArray)
+        {
+            SudokuGrid grid = new();
+            for (int i = 0; i < 81; i++)
+            {
+                grid.numbers[i] = cellArray[i].Number ?? 0;
+            }
+
+            return grid;
+        }
+
+        public static SudokuGrid CreateSample()
+        {
+            return new SudokuGrid()
+            {
+                numbers = [
+                //  0  1  2  3  4  5  6  7  8
+                    2, 0, 5, 0, 0, 8, 0, 0, 0, // 0
+                    0, 0, 0, 9, 0, 4, 8, 5, 2, // 1
+                    0, 0, 0, 0, 0, 0, 0, 9, 7, // 2
+                    0, 0, 0, 0, 0, 0, 7, 0, 1, // 3
+                    6, 3, 7, 5, 2, 0, 4, 8, 9, // 4
+                    0, 0, 8, 4, 0, 6, 0, 2, 5, // 5
+                    3, 0, 1, 8, 0, 7, 2, 0, 6, // 6
+                    0, 0, 9, 0, 0, 0, 0, 0, 0, // 7
+                    0, 0, 2, 6, 3, 0, 0, 0, 8, // 8
+                ]
+            };
         }
 
         #endregion

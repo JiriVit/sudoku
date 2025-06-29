@@ -190,7 +190,21 @@ namespace Sudoku
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            viewModel.Generate();
+            if (sender is Button b)
+            {
+                if (b.Tag is string s)
+                {
+                    switch(s)
+                    {
+                        case "Generate":
+                            viewModel.Generate();
+                            break;
+                        case "Solve":
+                            viewModel.Solve();
+                            break;
+                    }
+                }
+            }
         }
 
         #endregion

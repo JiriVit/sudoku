@@ -107,8 +107,13 @@ namespace Sudoku
 
         public void Generate()
         {
-            SudokuGenerator.Generate()?.ToCellArray(Cells);
-            //SudokuGenerator.Solve();
+            //SudokuGenerator.Generate()?.ToCellArray(Cells);
+            SudokuGrid.CreateSample().ToCellArray(Cells);
+        }
+
+        public void Solve()
+        {
+            SudokuSolver.Solve(SudokuGrid.FromCellArray(Cells)).ToCellArray(Cells);
         }
 
         #endregion
