@@ -107,17 +107,8 @@ namespace Sudoku
 
         public void Generate()
         {
-            //SudokuGenerator.Generate();
-
-            //for (int row = 0; row < 9; row++)
-            //{
-            //    for (int col = 0; col < 9; col++)
-            //    {
-            //        Cells[row * 9 + col].Number = SudokuGenerator.Sudoku[row, col];
-            //    }
-            //}
-
-            SudokuGenerator.Solve();
+            SudokuGenerator.Generate()?.ToCellArray(Cells);
+            //SudokuGenerator.Solve();
         }
 
         #endregion
