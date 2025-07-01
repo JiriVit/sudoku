@@ -108,7 +108,6 @@ namespace Sudoku
                 MarkCellsWithSelectedNumber(false);
                 selectedCell.Number = number;
                 MarkCellsWithSelectedNumber(true);
-                UpdateIncorrectStatus();
             }
         }
 
@@ -122,54 +121,33 @@ namespace Sudoku
             {
                 MarkCellsWithSelectedNumber(false);
                 selectedCell.Number = null;
-                UpdateIncorrectStatus();
             }
         }
 
         public void LoadSample()
         {
-            SudokuGrid.CreateSample().ToCellArray(Cells);
-            UpdateEditableCells();
+            SudokuGrid sample = SudokuGrid.CreateSample();
+            SudokuGrid solvedSample = SudokuSolver.Solve(sample);
+
+            solvedSample.ToCellArray(Cells, SudokuGrid.AsCorrectNumbers);
+            sample.ToCellArray(Cells, SudokuGrid.AsShownNumbers);
         }
 
         public void Generate()
         {
-            SudokuGenerator.Generate()?.ToCellArray(Cells);
+            // TODO First store the solved puzzle sudoku to correct numbers, then store unsolved sudoku
+            // to shown numbers, to correctly set editable cells.
+            SudokuGenerator.Generate()?.ToCellArray(Cells, SudokuGrid.AsShownNumbers);
         }
 
         public void Solve()
         {
-            SudokuSolver.Solve(SudokuGrid.FromCellArray(Cells)).ToCellArray(Cells);
+            SudokuSolver.Solve(SudokuGrid.FromCellArray(Cells)).ToCellArray(Cells, SudokuGrid.AsShownNumbers);
         }
 
         #endregion
 
         #region .: Private Methods :.
-
-        /// <summary>
-        /// Updates the <see cref="CellModel.Editable"/> property of all cells per their
-        /// current contents - if they are not empty, the won't be editable.
-        /// Invoke this after a new sudoku has been generated.
-        /// </summary>
-        private void UpdateEditableCells()
-        {
-            foreach (var item in Cells)
-            {
-                item.Editable = item.Number == null;
-            }
-        }
-
-        /// <summary>
-        /// Updates the <see cref="CellModel.Incorrect"/> property of selected cell.
-        /// </summary>
-        private void UpdateIncorrectStatus()
-        {
-            if (selectedCell != null)
-            {
-                // TODO Fix this to include also numbers in empty cells.
-                selectedCell.Incorrect = Cells.Any(c => c.IsSameRegion(selectedCell) && c.HasSameNumber(selectedCell));
-            }
-        }
 
         private void MarkCellsWithSelectedNumber(bool isSelected)
         {

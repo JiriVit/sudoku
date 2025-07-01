@@ -18,6 +18,10 @@ namespace Sudoku
 
         /// <summary>
         /// Gets or sets the number written in the cell.
+        /// If the cell has its <see cref="Editable"/> property reset due to previous update of
+        /// <see cref="CorrectNumber"/>, setting of <see cref="Number"/> will update the <see cref="Editable"/>
+        /// value according set value - null makes the cell editable (to be solved), number makes the
+        /// cell not editable (to be preset).
         /// </summary>
         public int? Number
         {
@@ -25,7 +29,25 @@ namespace Sudoku
             set
             {
                 number = value;
+                editable ??= (number == null);
+
                 NotifyPropertyChanged(nameof(Number));
+                NotifyPropertyChanged(nameof(Foreground));
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the correct number that belongs to the cell.
+        /// Setting of this property resets the <see cref="Editable"/> property - do this only
+        /// when assigning a freshly generated puzzle.
+        /// </summary>
+        public int CorrectNumber
+        {
+            get => correctNumber; 
+            set
+            {
+                correctNumber = value;
+                editable = null;
             }
         }
 
@@ -60,7 +82,7 @@ namespace Sudoku
         /// <summary>
         /// Gets cell text foreground.
         /// </summary>
-        public Brush Foreground => editable ? (incorrect ? Brushes.Red : Brushes.Blue) : Brushes.Black;
+        public Brush Foreground => Editable ? (Incorrect ? Brushes.Red : Brushes.Blue) : Brushes.Black;
 
         #endregion
 
@@ -114,34 +136,20 @@ namespace Sudoku
         }
 
         /// <summary>
-        /// Get or sets indication that the cell is editable.
+        /// Gets indication that the cell is user editable.
         /// </summary>
-        public bool Editable
+        public bool Editable 
         {
-            get => editable;
-            set
-            {
-                if (editable != value)
-                {
-                    editable = value;
-                    NotifyPropertyChanged(nameof(Foreground));
-                }
-            }
+            get => editable ?? false;
+            private set => editable = value;
         }
 
         /// <summary>
-        /// Sets indication that the number in the cell is incorrect.
+        /// Gets indication that the number in the cell is incorrect.
         /// </summary>
-        public bool Incorrect
+        private bool Incorrect
         {
-            set
-            {
-                if (incorrect != value)
-                {
-                    incorrect = value;
-                    NotifyPropertyChanged(nameof(Foreground));
-                }
-            }
+            get => (CorrectNumber > 0) && (Number != CorrectNumber);
         }
 
         #endregion
@@ -151,11 +159,11 @@ namespace Sudoku
         #region .: Private Variables :.
 
         private int? number = null;
+        private int correctNumber;
         private bool highlighted = false;
         private bool mouseOver = false;
         private bool selected = false;
-        private bool editable = false;
-        private bool incorrect = false;
+        private bool? editable = null;
 
         #endregion
 

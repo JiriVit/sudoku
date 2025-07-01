@@ -12,6 +12,13 @@ namespace Sudoku
     /// </summary>
     internal class SudokuGrid
     {
+        #region .: Constants :.
+
+        public const bool AsShownNumbers = false;
+        public const bool AsCorrectNumbers = true;
+
+        #endregion
+
         #region .: Private Fields :.
 
         private int[] numbers = new int[81];
@@ -91,11 +98,18 @@ namespace Sudoku
         /// Copies the numbers to given array of instances of <see cref="CellModel"/>.
         /// </summary>
         /// <param name="cellArray">Array to copy the numbers to.</param>
-        public void ToCellArray(CellModel[] cellArray)
+        public void ToCellArray(CellModel[] cellArray, bool asCorrectNumbers)
         {
             for (int i = 0; i < 81; i++)
             {
-                cellArray[i].Number = (numbers[i] > 0) ? numbers[i] : null;
+                if (asCorrectNumbers)
+                {
+                    cellArray[i].CorrectNumber = numbers[i];
+                }
+                else
+                {
+                    cellArray[i].Number = (numbers[i] > 0) ? numbers[i] : null;
+                }
             }
         }
 
