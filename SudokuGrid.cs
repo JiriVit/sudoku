@@ -40,6 +40,12 @@ namespace Sudoku
             set => numbers[ToIndex(row, col)] = value;
         }
 
+        public int this[int index]
+        {
+            get => numbers[index];
+            set => numbers[index] = value;
+        }
+
         #endregion
 
         #region .: Public Methods :.

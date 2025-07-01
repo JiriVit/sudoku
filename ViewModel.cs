@@ -135,9 +135,13 @@ namespace Sudoku
 
         public void Generate()
         {
-            // TODO First store the solved puzzle sudoku to correct numbers, then store unsolved sudoku
-            // to shown numbers, to correctly set editable cells.
-            SudokuGenerator.Generate()?.ToCellArray(Cells, SudokuGrid.AsShownNumbers);
+            (SudokuGrid? solvedSudoku, SudokuGrid? unsolvedSudoku) = SudokuGenerator.Generate();
+
+            if ((solvedSudoku != null) && (unsolvedSudoku != null))
+            {
+                solvedSudoku.ToCellArray(Cells, SudokuGrid.AsCorrectNumbers);
+                unsolvedSudoku.ToCellArray(Cells, SudokuGrid.AsShownNumbers);
+            }
         }
 
         public void Solve()

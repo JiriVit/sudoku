@@ -13,10 +13,10 @@ namespace Sudoku
     /// </summary>
     internal static class SudokuGenerator
     {
-        #region .: Private Variables :.
+        #region .: Private Fields :.
 
         private static readonly Random random = new();
-        private static int[,] sudoku = new int[9, 9];
+        private static readonly int numbersToRemove = 10;
 
         #endregion
 
@@ -25,10 +25,13 @@ namespace Sudoku
         /// <summary>
         /// Generates a new sudoku.
         /// </summary>
-        public static SudokuGrid? Generate()
+        public static (SudokuGrid?, SudokuGrid?) Generate()
         {
             // recursively generate a solved sudoku
-            return AddNextNumber(new SudokuGrid());
+            SudokuGrid? solvedSudoku = AddNextNumber(new SudokuGrid());
+            SudokuGrid? unsolvedSudoku = RemoveNextNumber(solvedSudoku);
+
+            return (solvedSudoku, unsolvedSudoku);
         }
 
         #endregion
@@ -100,6 +103,15 @@ namespace Sudoku
             }
 
             return filledGrid;
+        }
+
+        private static SudokuGrid RemoveNextNumber(SudokuGrid grid)
+        {
+            SudokuGrid updatedGrid = grid.Clone();
+            int index = random.Next(81);
+            updatedGrid[index] = 0;
+
+            return updatedGrid;
         }
 
         #endregion
