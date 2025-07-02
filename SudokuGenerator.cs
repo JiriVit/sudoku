@@ -16,7 +16,7 @@ namespace Sudoku
         #region .: Private Fields :.
 
         private static readonly Random random = new();
-        private static readonly int numbersToRemove = 10;
+        private static readonly int numbersToRemove = 45;
 
         #endregion
 
@@ -27,9 +27,16 @@ namespace Sudoku
         /// </summary>
         public static (SudokuGrid?, SudokuGrid?) Generate()
         {
-            // recursively generate a solved sudoku
-            SudokuGrid? solvedSudoku = AddNextNumber(new SudokuGrid());
-            SudokuGrid? unsolvedSudoku = RemoveNextNumber(solvedSudoku);
+            SudokuGrid? solvedSudoku;
+            SudokuGrid? unsolvedSudoku = null;
+
+            // recursively generate a solved puzzle
+            solvedSudoku = AddNextNumber(new SudokuGrid());
+            if (solvedSudoku != null)
+            {
+                // recursively empty required number of cells to create a solvable puzzle
+                unsolvedSudoku = RemoveNextNumber(solvedSudoku);
+            }            
 
             return (solvedSudoku, unsolvedSudoku);
         }
@@ -105,11 +112,56 @@ namespace Sudoku
             return filledGrid;
         }
 
-        private static SudokuGrid RemoveNextNumber(SudokuGrid grid)
+        /// <summary>
+        /// Removes a number from the puzzle and checks if it is still solvable.
+        /// Recursively calls itself to empty required number of cells or to backtrack in case of
+        /// blind path. Required number of emptied cells is defined by private field <see cref="numbersToRemove"/>.
+        /// </summary>
+        /// <param name="grid">Solved puzzle to be processed.</param>
+        /// <returns>Puzzle with emptied cells per requirement; or null if the path exhausted all options
+        /// and backtracking is needed.</returns>
+        private static SudokuGrid? RemoveNextNumber(SudokuGrid grid)
         {
-            SudokuGrid updatedGrid = grid.Clone();
-            int index = random.Next(81);
-            updatedGrid[index] = 0;
+            SudokuGrid? updatedGrid = null;
+
+            // collect indices of filled cells so we can clear them
+            List<int> indicesOfFilledCells = [.. Enumerable.Range(0, 81).Where(i => grid[i] != 0)];
+            int countOfEmptyCells = 81 - indicesOfFilledCells.Count;
+
+            bool clearAnotherCell = true;
+            while (clearAnotherCell)
+            {
+                updatedGrid = grid.Clone();
+
+                // pick one of the filled cells and clear it
+                int index = random.Next(indicesOfFilledCells.Count);
+                updatedGrid[indicesOfFilledCells[index]] = 0;
+                indicesOfFilledCells.RemoveAt(index);
+
+                // is the puzzle still solvable?
+                if (SudokuSolver.Solve(updatedGrid).IsSolved())
+                {
+                    if (countOfEmptyCells == (numbersToRemove - 1))
+                    {
+                        // we've reached the desired number of empty cells -> stop and return the current grid
+                        clearAnotherCell = false;
+                    }
+                    else
+                    {
+                        updatedGrid = RemoveNextNumber(updatedGrid);
+                        clearAnotherCell = (updatedGrid == null);
+                    }
+                }
+                else
+                {
+                    if (indicesOfFilledCells.Count == 0)
+                    {
+                        // puzzle is not solvable and we ran out of options -> need to backtrack
+                        clearAnotherCell = false;
+                        updatedGrid = null;
+                    }
+                }
+            }
 
             return updatedGrid;
         }
