@@ -31,6 +31,7 @@ namespace Sudoku
             DataContext = viewModel;
 
             CreateSudokuElements();
+            CreateNumberIndicators();
         }
 
         #endregion
@@ -136,6 +137,65 @@ namespace Sudoku
             }
 
             subgridBorder.Child = subgrid;
+        }
+
+        private void CreateNumberIndicators()
+        {
+            gridNumberIndicators.Children.Clear();
+            gridNumberIndicators.RowDefinitions.Clear();
+
+            for (int number = 1; number <= 9; number++)
+            {
+                int gridRow = number - 1;
+
+                Border border = new()
+                {
+                    Background = Brushes.White,
+                    CornerRadius = new CornerRadius(10),
+                    Margin = new Thickness(0, 3, 0, 3),
+                    DataContext = viewModel.NumberIndicators[gridRow]
+                };
+                border.SetBinding(VisibilityProperty, "Visible");
+
+                Grid.SetRow(border, gridRow);
+                Grid.SetColumnSpan(border, 2);
+
+                gridNumberIndicators.RowDefinitions.Add(new RowDefinition());
+                gridNumberIndicators.Children.Add(border);
+
+                TextBlock textBlock = new()
+                {
+                    Text = number.ToString(),
+                    FontSize = 30,
+                    FontFamily = new FontFamily("Arial"),
+                    Foreground = Brushes.MediumBlue,
+                    VerticalAlignment = VerticalAlignment.Center,
+                    HorizontalAlignment = HorizontalAlignment.Center,
+                    DataContext = viewModel.NumberIndicators[gridRow]
+                };
+
+                textBlock.SetBinding(VisibilityProperty, "Visible");
+
+                Grid.SetRow(textBlock, gridRow);
+                gridNumberIndicators.Children.Add(textBlock);
+
+                textBlock = new()
+                {
+                    Text = number.ToString(),
+                    FontSize = 15,
+                    FontFamily = new FontFamily("Arial"),
+                    VerticalAlignment = VerticalAlignment.Center,
+                    HorizontalAlignment = HorizontalAlignment.Center,
+                    DataContext = viewModel.NumberIndicators[gridRow]
+                };
+
+                textBlock.SetBinding(TextBlock.TextProperty, "Indicator");
+                textBlock.SetBinding(VisibilityProperty, "Visible");
+
+                Grid.SetRow(textBlock, gridRow);
+                Grid.SetColumn(textBlock, 1);
+                gridNumberIndicators.Children.Add(textBlock);
+            }
         }
 
         #endregion

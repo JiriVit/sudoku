@@ -77,12 +77,12 @@ namespace Sudoku
         /// <summary>
         /// Gets cell border background.
         /// </summary>
-        public Brush Background => selected ? Brushes.LightBlue : (highlighted ? Brushes.Gainsboro : Brushes.White);
+        public Brush Background => selected ? Brushes.LightBlue : (highlighted ? Brushes.WhiteSmoke : Brushes.White);
 
         /// <summary>
         /// Gets cell text foreground.
         /// </summary>
-        public Brush Foreground => Editable ? (Incorrect ? Brushes.Red : Brushes.Blue) : Brushes.Black;
+        public Brush Foreground => Editable ? (Incorrect ? Brushes.Red : Brushes.MediumBlue) : Brushes.Black;
 
         #endregion
 

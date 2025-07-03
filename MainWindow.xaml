@@ -11,47 +11,79 @@
     <DockPanel>
 
         <ToolBar DockPanel.Dock="Top">
-            <Button Content="Sample" Tag="Sample"  Click="Button_Click"/>
             <Button Content="Generate" Tag="Generate"  Click="Button_Click"/>
-            <Button Content="Solve" Tag="Solve" Click="Button_Click"/>
         </ToolBar>
-        
-        <!-- Sudoku Grid -->
-        <Border BorderBrush="Black" BorderThickness="2" Width="400" Height="400" SnapsToDevicePixels="True">
-            <Grid x:Name="gridMain">
+
+        <Grid Background="WhiteSmoke">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition Height="400"/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="400"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            
+            <!-- Sudoku Grid -->
+            <Border BorderBrush="Black" BorderThickness="2" 
+                Grid.Row="1" Grid.Column="1" Width="400" Height="400" SnapsToDevicePixels="True">
+                <Grid x:Name="gridMain">
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+
+                    <Border BorderBrush="Black" BorderThickness="0 0 1 1">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+
+                            <Border Background="WhiteSmoke" BorderBrush="Black" BorderThickness="0 0 1 1">
+                                <TextBlock Text="1" 
+                                           FontSize="30" FontFamily="Arial" 
+                                           VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                            </Border>
+                            
+                        </Grid>
+                    </Border>
+                </Grid>
+            </Border>
+
+            <Grid Grid.Row="1" Grid.Column="2" Margin="20,0,20,0" x:Name="gridNumberIndicators">
                 <Grid.RowDefinitions>
-                    <RowDefinition/>
-                    <RowDefinition/>
+                    <RowDefinition Height="44"/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
+                    <ColumnDefinition Width="30"/>
+                    <ColumnDefinition Width="20"/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
 
-                <Border BorderBrush="Black" BorderThickness="0 0 1 1">
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                        </Grid.ColumnDefinitions>
+                <Border Grid.ColumnSpan="2" Background="White" CornerRadius="10" Margin="0,3,0,3"/>
+                <TextBlock Text="1" FontSize="30" FontFamily="Arial" Foreground="MediumBlue" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                <TextBlock Grid.Column="1" Text="9" FontSize="15" FontFamily="Arial" VerticalAlignment="Center" HorizontalAlignment="Center"/>
 
-                        <Border Background="LightGray" BorderBrush="Black" BorderThickness="0 0 1 1">
-                            <TextBlock Text="1" 
-                                       FontSize="30" FontFamily="Arial" 
-                                       VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                        </Border>
-                        
-                    </Grid>
-                </Border>
             </Grid>
-        </Border>
+            
+        </Grid>
+        
     </DockPanel>
 </Window>

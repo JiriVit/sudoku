@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using Sudoku.Models;
 
 namespace Sudoku
 {
@@ -19,6 +20,11 @@ namespace Sudoku
         /// Gets array with instances of class <see cref="CellModel"/> that represent single sudoku cells.
         /// </summary>
         public CellModel[] Cells { get; private set; }
+
+        /// <summary>
+        /// Gets array with number indicators.
+        /// </summary>
+        public NumberIndicatorModel[] NumberIndicators { get; private set; } = new NumberIndicatorModel[9];
 
         #endregion
 
@@ -43,7 +49,11 @@ namespace Sudoku
                 {
                     Cells[row * 9 + col] = new(row, col);
                 }
+
+                NumberIndicators[row] = new();
             }
+
+            Generate();
         }
 
         #endregion
@@ -108,6 +118,7 @@ namespace Sudoku
                 MarkCellsWithSelectedNumber(false);
                 selectedCell.Number = number;
                 MarkCellsWithSelectedNumber(true);
+                UpdateNumberIndicators();
             }
         }
 
@@ -121,6 +132,7 @@ namespace Sudoku
             {
                 MarkCellsWithSelectedNumber(false);
                 selectedCell.Number = null;
+                UpdateNumberIndicators();
             }
         }
 
@@ -141,6 +153,7 @@ namespace Sudoku
             {
                 solvedSudoku.ToCellArray(Cells, SudokuGrid.AsCorrectNumbers);
                 unsolvedSudoku.ToCellArray(Cells, SudokuGrid.AsShownNumbers);
+                UpdateNumberIndicators();
             }
         }
 
@@ -161,6 +174,14 @@ namespace Sudoku
                 {
                     c.Selected = isSelected;
                 }
+            }
+        }
+
+        private void UpdateNumberIndicators()
+        {
+            for (int i = 0; i < 9; i++)
+            {
+                NumberIndicators[i].Indicator = 9 - Cells.Where(c => c.Number == (i + 1)).Count();
             }
         }
 
