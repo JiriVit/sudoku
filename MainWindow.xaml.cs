@@ -120,9 +120,10 @@ namespace Sudoku
                     int cellIndex = totalRow * 9 + totalCol;
 
                     // configure bindings
-                    textBlock.DataContext = viewModel.Cells[cellIndex];
-                    textBlock.SetBinding(TextBlock.TextProperty, "Number");
-                    textBlock.SetBinding(TextBlock.ForegroundProperty, "Foreground");
+                    textBlock.DataContext = viewModel;
+                    textBlock.SetBinding(TextBlock.TextProperty, $"Cells[{cellIndex}].Number");
+                    textBlock.SetBinding(TextBlock.ForegroundProperty, $"Cells[{cellIndex}].Foreground");
+                    //textBlock.SetBinding(TextBlock.FontSizeProperty, $"FontSize");
                     cellBorder.DataContext = viewModel.Cells[cellIndex];
                     cellBorder.SetBinding(Border.BackgroundProperty, "Background");
 
@@ -256,18 +257,36 @@ namespace Sudoku
                 {
                     switch(s)
                     {
-                        case "Sample":
-                            viewModel.LoadSample();
-                            break;
                         case "Generate":
                             viewModel.Generate();
                             break;
-                        case "Solve":
-                            viewModel.Solve();
+                        case "Test":
+                            viewModel.Test();
                             break;
                     }
                 }
             }
+        }
+
+        #endregion
+
+        #region .: Grid :.
+
+        private void Grid_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            Grid grid = (Grid)sender;
+
+            foreach (Border subgridBorder in grid.Children)
+            {
+                Grid subgrid = (Grid)subgridBorder.Child;
+                foreach (Border border in subgrid.Children)
+                {
+                    TextBlock textBlock = (TextBlock)border.Child;
+                    textBlock.FontSize = e.NewSize.Height * 0.075;
+                }
+            }
+
+            // TODO Resize number indicators as well.
         }
 
         #endregion

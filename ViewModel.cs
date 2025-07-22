@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -12,7 +13,7 @@ namespace Sudoku
     /// <summary>
     /// Provides a ViewModel for the application.
     /// </summary>
-    internal class ViewModel
+    internal class ViewModel : ModelBase
     {
         #region .: Properties :.
 
@@ -160,6 +161,10 @@ namespace Sudoku
         public void Solve()
         {
             SudokuSolver.Solve(SudokuGrid.FromCellArray(Cells)).ToCellArray(Cells, SudokuGrid.AsShownNumbers);
+        }
+
+        public void Test()
+        {
         }
 
         #endregion

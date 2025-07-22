@@ -12,25 +12,25 @@
 
         <ToolBar DockPanel.Dock="Top">
             <Button Content="Generate" Tag="Generate"  Click="Button_Click"/>
+            <Button Content="Test" Tag="Test"  Click="Button_Click"/>
         </ToolBar>
 
         <Grid Background="WhiteSmoke">
             <Grid.RowDefinitions>
+                <RowDefinition Height="20"/>
                 <RowDefinition/>
-                <RowDefinition Height="400"/>
-                <RowDefinition/>
-                <RowDefinition/>
+                <RowDefinition Height="20"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
-                <ColumnDefinition Width="400"/>
+                <ColumnDefinition Width="{Binding ElementName=gridMain, Path=ActualHeight}"/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             
             <!-- Sudoku Grid -->
             <Border BorderBrush="Black" BorderThickness="2" 
-                Grid.Row="1" Grid.Column="1" Width="400" Height="400" SnapsToDevicePixels="True">
-                <Grid x:Name="gridMain">
+                Grid.Row="1" Grid.Column="1" SnapsToDevicePixels="True">
+                <Grid x:Name="gridMain" SizeChanged="Grid_SizeChanged">
                     <Grid.RowDefinitions>
                         <RowDefinition/>
                         <RowDefinition/>
@@ -66,6 +66,7 @@
                 </Grid>
             </Border>
 
+            <!-- Grid with number indicators -->
             <Grid Grid.Row="1" Grid.Column="2" Margin="20,0,20,0" x:Name="gridNumberIndicators">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="44"/>
