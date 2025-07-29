@@ -274,9 +274,7 @@ namespace Sudoku
 
         private void Grid_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            Grid grid = (Grid)sender;
-
-            foreach (Border subgridBorder in grid.Children)
+            foreach (Border subgridBorder in gridMain.Children)
             {
                 Grid subgrid = (Grid)subgridBorder.Child;
                 foreach (Border border in subgrid.Children)
@@ -286,7 +284,21 @@ namespace Sudoku
                 }
             }
 
-            // TODO Resize number indicators as well.
+            gridNumberIndicators.ColumnDefinitions[0].Width = new GridLength(e.NewSize.Height * 0.075);
+            gridNumberIndicators.ColumnDefinitions[1].Width = new GridLength(e.NewSize.Height * 0.05);
+
+            var allIndicators = gridNumberIndicators.Children.OfType<TextBlock>();
+            var largeIndicators = allIndicators.Where(i => Grid.GetColumn(i) == 0);
+            var smallIndicators = allIndicators.Where(i => Grid.GetColumn(i) == 1);
+
+            foreach (TextBlock textBlock in largeIndicators)
+            {
+                textBlock.FontSize = e.NewSize.Height * 0.075;
+            }
+            foreach (TextBlock textBlock in smallIndicators)
+            {
+                textBlock.FontSize = e.NewSize.Height * 0.0375;
+            }
         }
 
         #endregion
