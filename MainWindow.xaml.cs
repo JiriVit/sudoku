@@ -58,7 +58,7 @@ namespace Sudoku
 
                     Border subgridBorder = new()
                     {
-                        BorderBrush = Brushes.Black,
+                        BorderBrush = TryFindResource("ThickBorderBrush") as Brush,
                         BorderThickness = new Thickness(thicknessLeft, thicknessTop, thicknessRight, thicknessBottom),
                         SnapsToDevicePixels = true,
                     };
@@ -96,9 +96,8 @@ namespace Sudoku
 
                     Border cellBorder = new()
                     {
-                        BorderBrush = Brushes.Black,
+                        Style = TryFindResource("CellBorder") as Style,
                         BorderThickness = new Thickness(thicknessLeft, thicknessTop, thicknessRight, thicknessBottom),
-                        SnapsToDevicePixels = true,
                     };
 
                     Grid.SetColumn(cellBorder, col);
@@ -108,10 +107,7 @@ namespace Sudoku
 
                     TextBlock textBlock = new()
                     {
-                        FontSize = 30,
-                        FontFamily = new FontFamily("Arial"),
-                        VerticalAlignment = VerticalAlignment.Center,
-                        HorizontalAlignment = HorizontalAlignment.Center,
+                        Style = TryFindResource("NumberTextBlock") as Style,
                     };
 
                     // calculate cell index within a 1D array
@@ -120,12 +116,10 @@ namespace Sudoku
                     int cellIndex = totalRow * 9 + totalCol;
 
                     // configure bindings
-                    textBlock.DataContext = viewModel;
-                    textBlock.SetBinding(TextBlock.TextProperty, $"Cells[{cellIndex}].Number");
-                    textBlock.SetBinding(TextBlock.ForegroundProperty, $"Cells[{cellIndex}].Foreground");
-                    //textBlock.SetBinding(TextBlock.FontSizeProperty, $"FontSize");
+                    textBlock.DataContext = viewModel.Cells[cellIndex];
+                    textBlock.SetBinding(TextBlock.TextProperty, "Number");
                     cellBorder.DataContext = viewModel.Cells[cellIndex];
-                    cellBorder.SetBinding(Border.BackgroundProperty, "Background");
+                    //cellBorder.SetBinding(Border.BackgroundProperty, "Background");
 
                     // configure event handlers
                     cellBorder.MouseEnter += CellBorder_MouseEnter;
@@ -166,12 +160,8 @@ namespace Sudoku
 
                 TextBlock textBlock = new()
                 {
+                    Style = TryFindResource("LargeIndicatorTextBlock") as Style,
                     Text = number.ToString(),
-                    FontSize = 30,
-                    FontFamily = new FontFamily("Arial"),
-                    Foreground = Brushes.MediumBlue,
-                    VerticalAlignment = VerticalAlignment.Center,
-                    HorizontalAlignment = HorizontalAlignment.Center,
                     DataContext = viewModel.NumberIndicators[gridRow]
                 };
 
@@ -182,11 +172,8 @@ namespace Sudoku
 
                 textBlock = new()
                 {
+                    Style = TryFindResource("SmallIndicatorTextBlock") as Style,
                     Text = number.ToString(),
-                    FontSize = 15,
-                    FontFamily = new FontFamily("Arial"),
-                    VerticalAlignment = VerticalAlignment.Center,
-                    HorizontalAlignment = HorizontalAlignment.Center,
                     DataContext = viewModel.NumberIndicators[gridRow]
                 };
 

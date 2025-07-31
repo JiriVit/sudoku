@@ -32,7 +32,7 @@ namespace Sudoku
                 editable ??= (number == null);
 
                 NotifyPropertyChanged(nameof(Number));
-                NotifyPropertyChanged(nameof(Foreground));
+                NotifyPropertyChanged(nameof(Incorrect));
             }
         }
 
@@ -72,20 +72,6 @@ namespace Sudoku
 
         #endregion
 
-        #region .: Appearance :.
-
-        /// <summary>
-        /// Gets cell border background.
-        /// </summary>
-        public Brush Background => selected ? Brushes.LightBlue : (highlighted ? Brushes.WhiteSmoke : Brushes.White);
-
-        /// <summary>
-        /// Gets cell text foreground.
-        /// </summary>
-        public Brush Foreground => Editable ? (Incorrect ? Brushes.Red : Brushes.MediumBlue) : Brushes.Black;
-
-        #endregion
-
         #region .: Status :.
 
         /// <summary>
@@ -99,7 +85,7 @@ namespace Sudoku
                 if (highlighted != value)
                 {
                     highlighted = value;
-                    NotifyPropertyChanged(nameof(Background));
+                    NotifyPropertyChanged(nameof(Highlighted));
                 }
             }
         }
@@ -125,12 +111,13 @@ namespace Sudoku
         /// </summary>
         public bool Selected
         {
+            get => selected;
             set
             {
                 if (selected != value)
                 {
                     selected = value;
-                    NotifyPropertyChanged(nameof(Background));
+                    NotifyPropertyChanged(nameof(Selected));
                 }
             }
         }
@@ -147,7 +134,7 @@ namespace Sudoku
         /// <summary>
         /// Gets indication that the number in the cell is incorrect.
         /// </summary>
-        private bool Incorrect
+        public bool Incorrect
         {
             get => (CorrectNumber > 0) && (Number != CorrectNumber);
         }

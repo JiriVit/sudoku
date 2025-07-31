@@ -8,6 +8,58 @@
         Title="Sudoku" Height="500" Width="800" WindowStartupLocation="CenterScreen"
         d:DataContext="{d:DesignInstance Type=local:ViewModel}"
         KeyDown="Window_KeyDown">
+
+    <Window.Resources>
+        
+        <!-- Colors -->
+        <SolidColorBrush x:Key="ThickBorderBrush" Color="#7A808C"/>
+        <SolidColorBrush x:Key="ThinBorderBrush"  Color="#B6BAC3"/>
+        <SolidColorBrush x:Key="FixedNumberForegroundBrush"  Color="#2D3238"/>
+        <SolidColorBrush x:Key="PlayerNumberForegroundBrush"  Color="#2559BF"/>
+        <SolidColorBrush x:Key="IncorrectNumberForegroundBrush"  Color="#CC3256"/>
+        <SolidColorBrush x:Key="SelectedCellBackgroundBrush"  Color="#87AEFD"/>
+        <SolidColorBrush x:Key="HighlightedCellBackgroundBrush"  Color="#F1F2F7"/>
+        
+        <!-- Styles -->
+        <Style x:Key="TextBlockBaseStyle" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{StaticResource FixedNumberForegroundBrush}"/>
+            <Setter Property="FontFamily" Value="Arial"/>
+            <Setter Property="FontSize" Value="30"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+        </Style>
+        <Style x:Key="NumberTextBlock" BasedOn="{StaticResource TextBlockBaseStyle}" TargetType="TextBlock">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Editable}" Value="True">
+                    <Setter Property="Foreground" Value="{StaticResource PlayerNumberForegroundBrush}"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Incorrect}" Value="True">
+                    <Setter Property="Foreground" Value="{StaticResource IncorrectNumberForegroundBrush}"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="CellBorder" TargetType="Border">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="{StaticResource ThinBorderBrush}"/>
+            <Setter Property="SnapsToDevicePixels" Value="True"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Highlighted}" Value="True">
+                    <Setter Property="Background" Value="{StaticResource HighlightedCellBackgroundBrush}"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Selected}" Value="True">
+                    <Setter Property="Background" Value="{StaticResource SelectedCellBackgroundBrush}"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="LargeIndicatorTextBlock" BasedOn="{StaticResource TextBlockBaseStyle}" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{StaticResource PlayerNumberForegroundBrush}"/>
+        </Style>
+        <Style x:Key="SmallIndicatorTextBlock" BasedOn="{StaticResource TextBlockBaseStyle}" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="15"/>
+        </Style>
+        
+    </Window.Resources>
+    
     <DockPanel>
 
         <ToolBar DockPanel.Dock="Top">
@@ -28,7 +80,7 @@
             </Grid.ColumnDefinitions>
             
             <!-- Sudoku Grid -->
-            <Border BorderBrush="Black" BorderThickness="2" 
+            <Border BorderBrush="{StaticResource ThickBorderBrush}" BorderThickness="2" 
                 Grid.Row="1" Grid.Column="1" SnapsToDevicePixels="True">
                 <Grid x:Name="gridMain" SizeChanged="Grid_SizeChanged">
                     <Grid.RowDefinitions>
@@ -42,7 +94,7 @@
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
 
-                    <Border BorderBrush="Black" BorderThickness="0 0 1 1">
+                    <Border BorderBrush="{StaticResource ThickBorderBrush}"  BorderThickness="0 0 1 1">
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition/>
@@ -55,9 +107,9 @@
                                 <ColumnDefinition/>
                             </Grid.ColumnDefinitions>
 
-                            <Border Background="WhiteSmoke" BorderBrush="Black" BorderThickness="0 0 1 1">
+                            <Border Background="WhiteSmoke" BorderBrush="{StaticResource ThinBorderBrush}" BorderThickness="0 0 1 1">
                                 <TextBlock Text="1" 
-                                           FontSize="30" FontFamily="Arial" 
+                                           Foreground="{StaticResource FixedNumberForegroundBrush}" FontSize="30" FontFamily="Arial" 
                                            VerticalAlignment="Center" HorizontalAlignment="Center"/>
                             </Border>
                             
@@ -79,9 +131,8 @@
                 </Grid.ColumnDefinitions>
 
                 <Border Grid.ColumnSpan="2" Background="White" CornerRadius="10" Margin="0,3,0,3"/>
-                <TextBlock Text="1" FontSize="30" FontFamily="Arial" Foreground="MediumBlue" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                <TextBlock Grid.Column="1" Text="9" FontSize="15" FontFamily="Arial" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-
+                <TextBlock Text="1" Style="{StaticResource LargeIndicatorTextBlock}"/>
+                <TextBlock Grid.Column="1" Text="9" Style="{StaticResource SmallIndicatorTextBlock}"/>
             </Grid>
             
         </Grid>
